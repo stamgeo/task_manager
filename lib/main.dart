@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manager/viewmodels/task_viewmodel.dart';
+import 'package:task_manager/views/screens/task_screen.dart';
+import 'package:task_manager/views/widgets/add_task_bar.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => TaskViewModel(),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -9,10 +18,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+        body: const TaskScreen(),
+        bottomNavigationBar: AddTaskBar(
+          addTaskCallback: (String taskTitle) {
+            
+            context.read<TaskViewModel>().addTask(taskTitle);
+          },
         ),
       ),
     );
