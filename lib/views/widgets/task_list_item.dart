@@ -8,29 +8,27 @@ class TaskListItem extends StatelessWidget {
     required this.toggleDone,
     required this.delete,
   });
-  final bool  isDone;
-  final String  title;
+  final bool isDone;
+  final String title;
   final void Function() toggleDone;
   final void Function() delete;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(title),
-        IconButton(
-          onPressed: toggleDone,
-          icon: Icon(
-            isDone
-                ? Icons.check_box_rounded
-                : Icons.check_box_outline_blank_rounded,
-          ),
+    return ListTile(
+      title: Text(title),
+      leading: IconButton(
+        onPressed: toggleDone,
+        icon: Icon(
+          isDone
+              ? Icons.check_box_rounded
+              : Icons.check_box_outline_blank_rounded,
         ),
-        IconButton(
-          onPressed: delete,
-          icon: Icon(Icons.delete_forever_outlined),
-        ),
-      ],
+      ),
+      trailing: IconButton(
+        onPressed: delete,
+        icon: Icon(Icons.delete_forever_outlined),
+      ),
     );
   }
 }

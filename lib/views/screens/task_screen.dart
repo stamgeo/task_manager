@@ -14,7 +14,6 @@ class TaskScreen extends StatelessWidget {
       builder: (context, taskViewModel, child) => ListView.builder(
         itemBuilder: (context, index) {
           Task task = taskViewModel.tasks[index];
-
           return TaskListItem(
             key: ValueKey(task.id),
             isDone: task.done,

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:task_manager/viewmodels/task_viewmodel.dart';
 import 'package:task_manager/views/screens/task_screen.dart';
 import 'package:task_manager/views/widgets/add_task_bar.dart';
+import 'package:task_manager/views/widgets/task_progress_indicator.dart';
 
 void main() {
   runApp(
@@ -19,13 +20,27 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+        useMaterial3: true,
+      ),
       home: Scaffold(
+        appBar: AppBar(title: const Text('Task List')),
         body: const TaskScreen(),
-        bottomNavigationBar: AddTaskBar(
-          addTaskCallback: (String taskTitle) {
-            
-            context.read<TaskViewModel>().addTask(taskTitle);
-          },
+        bottomNavigationBar: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TaskProgressIdicator(),
+            AddTaskBar(
+              addTaskCallback: (String taskTitle) {
+                context.read<TaskViewModel>().addTask(taskTitle);
+              },
+              isTitleInvalidCallback: context
+                  .read<TaskViewModel>()
+                  .isTaskTitleInvalid,
+            ),
+          ],
         ),
       ),
     );

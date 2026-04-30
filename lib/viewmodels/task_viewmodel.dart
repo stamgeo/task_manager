@@ -24,13 +24,25 @@ class TaskViewModel extends ChangeNotifier {
   }
 
   void addTask(String title) {
+    if (isTaskTitleInvalid(title)) {
+      return;
+    }
     final Task task = Task(id: _nextId++, title: title, done: false);
     _taskList.add(task);
     notifyListeners();
   }
 
+  bool isTaskTitleInvalid(String title) =>
+      title.isEmpty ||
+      _taskList
+          .map((Task task) => task.title)
+          .any((String existingTitle) => title == existingTitle);
+
   bool _isIndexInvalid(int taskIndex) =>
       taskIndex < 0 || taskIndex >= _taskList.length;
 
   List<Task> get tasks => List.unmodifiable(_taskList);
+
+  double get completionPercentage => _taskList.isEmpty? 0 :
+      tasks.map((Task task) => task.done ? 1 : 0).fold(0, (a, b) => a + b) / _taskList.length ;
 }

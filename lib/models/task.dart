@@ -15,4 +15,13 @@ class Task {
   Task toggleDone() {
     return copyWith(done: !done);
   }
+
+  @override
+  bool operator ==(Object other) {
+    Task o = other as Task;
+    return title == o.title;
+  }
+
+  @override
+  int get hashCode => title.hashCode;
 }
