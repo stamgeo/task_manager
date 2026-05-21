@@ -15,6 +15,8 @@ class AddTaskBar extends StatefulWidget {
 class _AddTaskBarState extends State<AddTaskBar> {
   final _controller = TextEditingController();
 
+  String? errorText;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -33,17 +35,21 @@ class _AddTaskBarState extends State<AddTaskBar> {
                   style: BorderStyle.solid,
                 ),
               ),
+              errorText: errorText,
             ),
           ),
         ),
         TextButton(
           onPressed: () {
             TaskViewModel taskViewModel = context.read<TaskViewModel>();
-            if (!taskViewModel.isTaskTitleInvalid(_controller.text)) {
+            Set<String>? errorReasons = taskViewModel
+                .getReasonsWhyTitleIsInvalid(_controller.text);
+            if (errorReasons == null) {
               taskViewModel.addTask(_controller.text);
               _controller.clear();
               widget.onTaskAdded?.call();
             }
+            setState(() => errorText = errorReasons?.join('\n'));
           },
           child: const Text('Add task'),
         ),

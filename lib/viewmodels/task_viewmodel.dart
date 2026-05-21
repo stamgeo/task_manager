@@ -32,17 +32,32 @@ class TaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Set<String>? getReasonsWhyTitleIsInvalid(String title) {
+    Set<String> reasons = {};
+    if (title.isEmpty) {
+      reasons.add('Task should not be empty');
+      return reasons;
+    }
+
+    if (_taskList
+        .map((Task task) => task.title)
+        .any((String existingTitle) => title.trim() == existingTitle.trim())) {
+      reasons.add('Task already Exists');
+    }
+
+    return reasons.isEmpty ? null : reasons;
+  }
+
   bool isTaskTitleInvalid(String title) =>
-      title.isEmpty ||
-      _taskList
-          .map((Task task) => task.title)
-          .any((String existingTitle) => title == existingTitle);
+      getReasonsWhyTitleIsInvalid(title) != null;
 
   bool _isIndexInvalid(int taskIndex) =>
       taskIndex < 0 || taskIndex >= _taskList.length;
 
   List<Task> get tasks => List.unmodifiable(_taskList);
 
-  double get completionPercentage => _taskList.isEmpty? 0 :
-      tasks.map((Task task) => task.done ? 1 : 0).fold(0, (a, b) => a + b) / _taskList.length ;
+  double get completionPercentage => _taskList.isEmpty
+      ? 0
+      : tasks.map((Task task) => task.done ? 1 : 0).fold(0, (a, b) => a + b) /
+            _taskList.length;
 }
