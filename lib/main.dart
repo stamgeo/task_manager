@@ -31,15 +31,8 @@ class MainApp extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            TaskProgressIdicator(),
-            AddTaskBar(
-              addTaskCallback: (String taskTitle) {
-                context.read<TaskViewModel>().addTask(taskTitle);
-              },
-              isTitleInvalidCallback: context
-                  .read<TaskViewModel>()
-                  .isTaskTitleInvalid,
-            ),
+            TaskProgressIndicator(),
+            AddTaskBar(),
           ],
         ),
       ),

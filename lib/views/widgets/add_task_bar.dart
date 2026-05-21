@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:task_manager/viewmodels/task_viewmodel.dart';
 
 class AddTaskBar extends StatefulWidget {
-  const AddTaskBar({super.key, required this.addTaskCallback, required this.isTitleInvalidCallback});
-
-  final void Function(String taskTitle) addTaskCallback;
-  final bool Function(String taskTitle) isTitleInvalidCallback;
+  const AddTaskBar({super.key});
 
   @override
   State<StatefulWidget> createState() => _AddTaskBarState();
@@ -13,30 +12,36 @@ class AddTaskBar extends StatefulWidget {
 class _AddTaskBarState extends State<AddTaskBar> {
   final _controller = TextEditingController();
 
-  void _addTask() {
-    if (widget.isTitleInvalidCallback(_controller.text)) {
-      return;
-    }
-    widget.addTaskCallback(_controller.text);
-    _controller.text = '';
-  }
-
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: TextField(controller: _controller, decoration: InputDecoration(
-          filled: true,
-          fillColor: Theme.of(context).colorScheme.surface,
-          hintText: 'type task here',
-          border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.primary,
-              style: BorderStyle.solid,          
+        Expanded(
+          child: TextField(
+            controller: _controller,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Theme.of(context).colorScheme.surface,
+              hintText: 'type task here',
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.primary,
+                  style: BorderStyle.solid,
+                ),
+              ),
             ),
           ),
-        ),)),
-        TextButton(onPressed: _addTask, child: const Text('Add task')),
+        ),
+        TextButton(
+          onPressed: () {
+            TaskViewModel taskViewModel = context.read<TaskViewModel>();
+            if (!taskViewModel.isTaskTitleInvalid(_controller.text)) {
+              taskViewModel.addTask(_controller.text);
+              _controller.clear();
+            }
+          },
+          child: const Text('Add task'),
+        ),
       ],
     );
   }

@@ -16,7 +16,12 @@ class TaskListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(title),
+      title: Text(
+        title,
+        style: isDone
+            ? TextStyle(decoration: TextDecoration.lineThrough)
+            : null,
+      ),
       leading: IconButton(
         onPressed: toggleDone,
         icon: Icon(

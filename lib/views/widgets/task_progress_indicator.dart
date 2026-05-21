@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager/viewmodels/task_viewmodel.dart';
 
-class TaskProgressIdicator extends StatelessWidget {
-  const TaskProgressIdicator({super.key});
+class TaskProgressIndicator extends StatelessWidget {
+  const TaskProgressIndicator({super.key});
 
   @override
   Widget build(BuildContext context) {
