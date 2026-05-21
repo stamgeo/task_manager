@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:task_manager/viewmodels/task_viewmodel.dart';
 
 class AddTaskBar extends StatefulWidget {
-  const AddTaskBar({super.key});
+  const AddTaskBar({super.key, this.onTaskAdded, this.isAutofocus = false});
+
+  final void Function()? onTaskAdded;
+  final bool isAutofocus;
 
   @override
   State<StatefulWidget> createState() => _AddTaskBarState();
@@ -19,6 +22,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
         Expanded(
           child: TextField(
             controller: _controller,
+            autofocus: widget.isAutofocus,
             decoration: InputDecoration(
               filled: true,
               fillColor: Theme.of(context).colorScheme.surface,
@@ -38,6 +42,7 @@ class _AddTaskBarState extends State<AddTaskBar> {
             if (!taskViewModel.isTaskTitleInvalid(_controller.text)) {
               taskViewModel.addTask(_controller.text);
               _controller.clear();
+              widget.onTaskAdded?.call();
             }
           },
           child: const Text('Add task'),
